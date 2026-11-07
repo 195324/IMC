@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de IMC e Gordura Corporal</title>
+    <!-- Tailwind CSS para um visual moderno -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col items-center justify-center p-4">
+
+    <div class="max-w-md w-full bg-slate-800 rounded-2xl shadow-xl p-6 border border-slate-700">
+        <h1 class="text-2xl font-bold text-center mb-6 text-emerald-400">Calculadora de IMC</h1>
+
+        <!-- Peso -->
+        <div class="mb-4">
+            <label class="block text-sm font-medium mb-1 text-slate-300">Peso (kg): <span id="peso-val" class="font-bold text-emerald-400">70</span> kg</label>
+            <input type="range" id="peso" min="30" max="200" value="70" class="w-full accent-emerald-500 cursor-pointer" oninput="calcular()">
+        </div>
+
+        <!-- Altura -->
+        <div class="mb-6">
+            <label class="block text-sm font-medium mb-1 text-slate-300">Altura (cm): <span id="altura-val" class="font-bold text-emerald-400">170</span> cm</label>
+            <input type="range" id="altura" min="100" max="230" value="170" class="w-full accent-emerald-500 cursor-pointer" oninput="calcular()">
+        </div>
+
+        <!-- Resultado -->
+        <div class="bg-slate-900 p-4 rounded-xl text-center border border-slate-700">
+            <p class="text-sm text-slate-400">Seu IMC é:</p>
+            <div id="resultado-imc" class="text-3xl font-extrabold text-emerald-400 my-1">24.2</div>
+            <p id="classificacao" class="text-sm font-medium text-slate-300">Peso Normal (Eutrofia)</p>
+        </div>
+    </div>
+
+    <script>
+        function calcular() {
+            const peso = parseFloat(document.getElementById('peso').value);
+            const alturaCm = parseFloat(document.getElementById('altura').value);
+            
+            document.getElementById('peso-val').innerText = peso;
+            document.getElementById('altura-val').innerText = alturaCm;
+
+            const alturaM = alturaCm / 100;
+            const imc = peso / (alturaM * alturaM);
+
+            document.getElementById('resultado-imc').innerText = imc.toFixed(1);
+
+            let texto = "";
+            let cor = "text-emerald-400";
+
+            if (imc < 18.5) {
+                texto = "Abaixo do peso";
+                cor = "text-amber-400";
+            } else if (imc < 25) {
+                texto = "Peso Normal (Saudável)";
+                cor = "text-emerald-400";
+            } else if (imc < 30) {
+                texto = "Sobrepeso";
+                cor = "text-amber-400";
+            } else {
+                texto = "Obesidade";
+                cor = "text-rose-400";
+            }
+
+            const elemClass = document.getElementById('classificacao');
+            elemClass.innerText = texto;
+            elemClass.className = `text-sm font-medium ${cor}`;
+        }
+
+        calcular();
+    </script>
+</body>
+</html>
